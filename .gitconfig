@@ -1,0 +1,15 @@
+[pull]
+  rebase=true
+
+[rebase]
+  missingcommitscheck=warn
+  autostash=true
+
+[gitflow "hotfix.finish"]
+  notag=true
+
+[gitflow "release.finish"]
+  notag=true
+
+[gitflow "release.branch"]
+  notag=true
