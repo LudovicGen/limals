@@ -1,14 +1,17 @@
 version: '3.7'
 services:
   postgres:
-    image: postgres:13
-    container_name: limals-postgres
+    image: postgres:13-alpine
+    restart: on-failure
     ports:
       - 5432:5432
-    env_file:
-      - .env
+    expose:
+      - "5432"
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - ./docker/volumes/postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: prisma
+      POSTGRES_PASSWORD: 9fgJYRt11rz8OfL6ftw3cnTU9Ccyb98CGuSWYaTfShwCUIUn0E0EUQHgfqyQSMEw
 
 volumes:
   postgres:
