@@ -1,17 +1,13 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { CreateUserDto, Id, UserDto } from 'src/dtos';
+import { CreateUserDto } from 'src/dtos';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 import { UserService } from './user.service';
-
+@UseGuards(AuthGuard)
 @Controller('/users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
-  // @Get('/')
-  // async list(@Query() query: FilterDto | undefined): Promise<User[]> {
-  //   return await this.userService.list(query);
-  // }
 
   @Post('/')
   async create(@Body() user: CreateUserDto): Promise<User> {

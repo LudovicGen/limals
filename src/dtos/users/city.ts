@@ -22,5 +22,5 @@ export class CityDto extends CreateCityDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsUUID(4)
-  public id: number;
+  public id: string;
 }
