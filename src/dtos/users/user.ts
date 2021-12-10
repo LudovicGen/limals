@@ -10,13 +10,13 @@ import {
   IsUUID,
 } from 'class-validator';
 import { CityDto } from '.';
-import { Id } from '../utils';
+import { Id, RelationInput } from '../utils';
 
 export class CreateUserDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  public fistName: string;
+  public firstName: string;
 
   @ApiProperty()
   @IsString()
@@ -45,7 +45,7 @@ export class CreateUserDto {
 
   @ApiProperty({ type: () => CityDto })
   @Type(() => Id)
-  public cityId: Id;
+  public city: RelationInput<CityDto>;
 
   @ApiProperty({
     description: '0: unknown, 1: male, 2: weak',
@@ -58,10 +58,10 @@ export class CreateUserDto {
 
 export class UserDto extends CreateUserDto {
   @ApiProperty()
-  public cityId: CityDto;
+  public city: RelationInput<CityDto>;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsUUID(4)
-  public id!: string;
+  public id!: number;
 }

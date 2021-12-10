@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -8,26 +7,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model City {
+  name       String
+  postalCode String
+  id         Int    @id @default(autoincrement())
+  users      User[]
+}
+
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
+  firstName String
+  lastName  String
+  username  String
+  birthDate DateTime? @db.Timestamptz(6)
   email     String   @unique
-  name      String?
-  role      Role     @default(USER)
-  posts     Post[]
-}
-
-model Post {
+  password  String
+  sex       Int  @default(0)
   id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  published Boolean  @default(false)
-  title     String   @db.VarChar(255)
-  authorId  Int?
-  author    User?    @relation(fields: [authorId], references: [id])
-}
-
-enum Role {
-  USER
-  ADMIN
+  cityId    Int
+  city      City     @relation(fields: [cityId], references: [id])
 }

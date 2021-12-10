@@ -1,3 +1,3 @@
 export class Id {
-  public id!: string;
+  public id!: number;
 }

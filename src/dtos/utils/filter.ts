@@ -3,11 +3,11 @@ export class FilterDto {
 
   public disablePagination?: true | null;
 
-  public page?: number | null;
+  public skip?: number | null;
 
-  public itemsPerPage?: number | null;
+  public take?: number | null;
 
   public sort?: 'ASC' | 'DESC';
 
-  public orderBy?: string[];
+  public orderBy?: string;
 }
