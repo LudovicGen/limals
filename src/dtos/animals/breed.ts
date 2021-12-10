@@ -12,5 +12,5 @@ export class BreedDto extends CreatBreedDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsUUID(4)
-  public id!: string;
+  public id!: number;
 }
