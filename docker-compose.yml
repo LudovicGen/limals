@@ -1,4 +1,8 @@
 version: '3.7'
+# networks:
+#   api:
+#     name: api
+#     external: true
 services:
   postgres:
     image: postgres:13
@@ -7,12 +11,33 @@ services:
       - 5432:5432
     expose:
       - "5432"
+    # networks:
+    #   - api
     volumes:
       - ./docker/volumes/postgres:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: limals
       POSTGRES_PASSWORD: 9fgJYRt11rz8OfL6ftw3cnTU9Ccyb98CGuSWYaTfShwCUIUn0E0EUQHgfqyQSMEw
 
-volumes:
-  postgres:
-    name: limals
+  # limals-api:
+  #   image: node:16
+  #   restart: on-failure
+  #   user: 1000:1000
+  #   working_dir: /app
+  #   command: npm run dev
+  #   expose:
+  #     - "3000"
+  #   volumes:
+  #     - ./:/app
+  #   networks:
+  #     - api
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - postgres
+  #   environment:
+  #     SALT: EAsCKIFVCV5CcfJc7M24Zgegy0j9zEuu
+  #     JWT_SECRET: Y89kGTFgNXPvkzapJyV3spBZbFtgddN4
+  #     DATABASE_URL: postgresql://postgres:9fgJYRt11rz8OfL6ftw3cnTU9Ccyb98CGuSWYaTfShwCUIUn0E0EUQHgfqyQSMEw@localhost:5432/limals
+
+
