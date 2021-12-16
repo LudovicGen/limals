@@ -7,43 +7,48 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Account {
+  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  password String
+  username String @unique
+}
+
 model City {
   name       String
   postalCode String
   id         String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  users      User[]
+  User       User[]
 }
 
 model User {
+  id   String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   firstName String
   lastName  String
-  username  String
+  username  String    @unique
   birthDate DateTime? @db.Timestamptz(6)
   email     String    @unique
-  password  String
   sex       Int       @default(0)
-  id        String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   cityId    String @db.Uuid()
   city      City      @relation(fields: [cityId], references: [id])
   animals   Animal[]
 }
 
 model Breed {
-  id      String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name    String
+  id      String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   animals Animal[]
 }
 
 model Animal {
-  id          String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String?
-  birthYear   Int
-  sex         Int      @default(0)
+  sex         Int     @default(0)
   height      Int
   weight      Int?
   description String
   castrated   Boolean
-  userId      String @db.Uuid()
-  user        User     @relation(fields: [userId], references: [id])
+  birthYear   Int
+  id          String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String  @db.Uuid
+  user        User    @relation(fields: [userId], references: [id])
   breeds      Breed[]
 }

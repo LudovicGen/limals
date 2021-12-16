@@ -39,17 +39,12 @@ export class CreateUserDto {
   @IsEmail()
   public email: string;
 
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  public password!: string;
-
   @ApiProperty({ type: () => CityDto })
   @Type(() => Id)
   public city: RelationInput<CityDto>;
 
   @ApiProperty({
-    description: '0: unknown, 1: male, 2: weak',
+    description: '0: unknown, 1: man, 2: woman',
     minimum: 0,
   })
   @IsNumber()
