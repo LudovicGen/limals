@@ -10,7 +10,7 @@ datasource db {
 model City {
   name       String
   postalCode String
-  id         Int    @id @default(autoincrement())
+  id         String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   users      User[]
 }
 
@@ -19,10 +19,31 @@ model User {
   lastName  String
   username  String
   birthDate DateTime? @db.Timestamptz(6)
-  email     String   @unique
+  email     String    @unique
   password  String
-  sex       Int  @default(0)
-  id        Int      @id @default(autoincrement())
-  cityId    Int
-  city      City     @relation(fields: [cityId], references: [id])
+  sex       Int       @default(0)
+  id        String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  cityId    String @db.Uuid()
+  city      City      @relation(fields: [cityId], references: [id])
+  animals   Animal[]
+}
+
+model Breed {
+  id      String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name    String
+  animals Animal[]
+}
+
+model Animal {
+  id          String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String?
+  birthYear   Int
+  sex         Int      @default(0)
+  height      Int
+  weight      Int?
+  description String
+  castrated   Boolean
+  userId      String @db.Uuid()
+  user        User     @relation(fields: [userId], references: [id])
+  breeds      Breed[]
 }
