@@ -4,25 +4,30 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      =  env("DATABASE_URL")
+}
+
+model Account {
+  id       String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  password String
+  username String @unique
 }
 
 model City {
+  id   String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name       String
   postalCode String
-  id         Int    @id @default(autoincrement())
-  users      User[]
+  User       User[]
 }
 
 model User {
+  id   String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   firstName String
   lastName  String
-  username  String
+  username  String    @unique
   birthDate DateTime? @db.Timestamptz(6)
-  email     String   @unique
-  password  String
-  sex       Int  @default(0)
-  id        Int      @id @default(autoincrement())
-  cityId    Int
-  city      City     @relation(fields: [cityId], references: [id])
+  email     String    @unique
+  sex       Int       @default(0)
+  cityId    String @db.Uuid()
+  city      City      @relation(fields: [cityId], references: [id])
 }

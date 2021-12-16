@@ -1,9 +1,12 @@
 import { CityModule } from './user/city/city.module';
 import { Module } from '@nestjs/common';
+import { ConfigModule } from 'config/config.module';
+
+import { AuthModule } from './auth/auth.module';
 import { PrismaService } from './prisma.service';
 import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [PrismaService, UserModule, CityModule],
+  imports: [PrismaService, AuthModule, ConfigModule, UserModule, CityModule],
 })
 export class AppModule {}

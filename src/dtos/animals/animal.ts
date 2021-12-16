@@ -67,5 +67,5 @@ export class AnimalDto extends CreatAnimalDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsUUID(4)
-  public id!: number;
+  public id!: string;
 }

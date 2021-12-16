@@ -1,6 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { User } from '@prisma/client';
-import { CreateUserDto, FilterDto, Id, UserDto } from 'src/dtos';
+import { CreateUserDto, FilterDto } from 'src/dtos';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 import { UserService } from './user.service';
 
@@ -8,14 +19,15 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  // @Get('/')
-  // async list(@Query() query: FilterDto | undefined): Promise<User[]> {
-  //   return await this.userService.list(query);
-  // }
+  @Get('/')
+  async list(@Query() query: FilterDto | undefined): Promise<User[]> {
+    return await this.userService.list({ where: { username: query.search } });
+  }
 
+  @UseGuards(AuthGuard)
   @Get('/:id')
-  async get(@Param("id") id: string): Promise<User> {
-    return await this.userService.get({id: Number(id)});
+  async get(@Param('id') id: string): Promise<User> {
+    return await this.userService.get({ id: id });
   }
 
   @Post('/')
@@ -23,13 +35,19 @@ export class UserController {
     return await this.userService.create(user);
   }
 
-  @Delete('/delete/:id')
-  async delete(@Param("id") id: string): Promise<User> {
-    return await this.userService.delete({id: Number(id)});
+  @Delete('/:id')
+  async delete(@Param('id') id: string): Promise<User> {
+    return await this.userService.delete({ id: id });
   }
 
-  @Put('/update/:id')
-  async update(@Param("id") id: string, @Body() city: CreateUserDto): Promise<User> {
-    return await this.userService.update({where: {id: Number(id)}, data: city });
+  @Put('/:id')
+  async update(
+    @Param('id') id: string,
+    @Body() city: CreateUserDto,
+  ): Promise<User> {
+    return await this.userService.update({
+      where: { id: id },
+      data: city,
+    });
   }
 }
