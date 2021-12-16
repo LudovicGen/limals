@@ -1,14 +1,14 @@
 import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreatBreedDto {
+export class CreateBreedDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
   public name: string;
 }
 
-export class BreedDto extends CreatBreedDto {
+export class BreedDto extends CreateBreedDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsUUID(4)
