@@ -17,7 +17,7 @@ model City {
   name       String
   postalCode String
   id         String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  User       User[]
+  users       User[]
 }
 
 model User {
