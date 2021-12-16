@@ -4,6 +4,13 @@ import { users } from './users';
 const prisma = new PrismaClient();
 
 async function main() {
+    if (process.env.NODE_ENV !== "developpement") {
+        return;
+    }
+
+    await prisma.city.deleteMany()
+    await prisma.user.deleteMany()
+
     await prisma.city.create({
         data: {
             'name' : 'Bordeaux',
