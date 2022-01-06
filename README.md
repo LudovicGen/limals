@@ -1,5 +1,5 @@
 
-![Logo](https://github.com/LudovicGendre/limals/config/logo.png)
+![Logo](config/logo.png)
 
 
 # Limals
