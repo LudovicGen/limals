@@ -10,7 +10,8 @@ import {
   IsUUID,
 } from 'class-validator';
 import { CityDto } from '.';
-import { Id, RelationInput } from '../utils';
+import { AnimalDto } from '..';
+import { Id, RelationInput, RelationsInput } from '../utils';
 
 export class CreateUserDto {
   @ApiProperty()
@@ -54,6 +55,9 @@ export class CreateUserDto {
 export class UserDto extends CreateUserDto {
   @ApiProperty()
   public city: RelationInput<CityDto>;
+
+  @ApiProperty({ type: () => AnimalDto })
+  public animals: RelationsInput<UserDto>;
 
   @ApiProperty()
   @IsNotEmpty()
