@@ -1,31 +1,24 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 import { seedUsers } from './users';
 import { seedCities } from './cities';
 
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.user.deleteMany({});
+  await prisma.city.deleteMany({});
 
-    await prisma.user.deleteMany({})
-    await prisma.city.deleteMany({})
+  await seedCities();
 
-    // await prisma.city.create({
-    //     data: {
-    //         'name' : 'Bordeaux',
-    //         'postalCode' : "33000"
-    //     }
-    // })
-
-    await seedCities()
-
-    console.log('seeding Users...')
-    await seedUsers()
-
+  console.log('seeding Users...');
+  await seedUsers();
 }
 
-main().catch(e => {
+main()
+  .catch((e) => {
     console.log(e);
     process.exit(1);
-}).finally(async () => {
-    await prisma.$disconnect()
-});
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
