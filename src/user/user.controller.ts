@@ -24,6 +24,15 @@ export class UserController {
     return await this.userService.list({ where: { username: query.search } });
   }
 
+  @Get('/city/:id')
+  async listCity(@Param('id') id: string): Promise<User[]> {
+    return await this.userService.getCity({
+      cityWhereUniqueInput: {
+        id,
+      },
+    });
+  }
+
   @UseGuards(AuthGuard)
   @Get('/:id')
   async get(@Param('id') id: string): Promise<User> {

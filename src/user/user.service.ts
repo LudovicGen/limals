@@ -34,6 +34,14 @@ export class UserService {
     });
   }
 
+  async getCity(params: {
+    cityWhereUniqueInput: Prisma.CityWhereUniqueInput;
+  }): Promise<User[] | null> {
+    return this.prisma.user.findMany({
+      where: { city: params.cityWhereUniqueInput },
+    });
+  }
+
   async create(data: Prisma.UserCreateInput): Promise<User> {
     return this.prisma.user.create({
       data,
