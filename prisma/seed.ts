@@ -14,6 +14,7 @@ async function main() {
   await prisma.user.deleteMany({});
   await prisma.city.deleteMany({});
   await prisma.breed.deleteMany({});
+  await prisma.animal.deleteMany({});
 
   console.log('seeding Cities...');
   await seedCities();
