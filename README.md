@@ -32,5 +32,5 @@ Lancement du projet avec npm et docker
 
 Information des routes disponibles :
 
-[Swagger](https://localhost:3000/api)
+[Swagger](http://localhost:3000/api/)
 
