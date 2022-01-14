@@ -9,10 +9,12 @@ import {
   Query,
   UploadedFile,
   UseGuards,
+  Request,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { User } from '@prisma/client';
+import { query } from 'express';
 import { diskStorage } from 'multer';
 import path = require('path');
 import { v4 as uuidv4 } from 'uuid';
@@ -43,6 +45,19 @@ export class UserController {
         id,
       },
     });
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/proximity')
+  async getUsersInRadius(
+    @Query('radius') radius: string,
+    @Request() req: any,
+  ): Promise<User[]> {
+    console.log(req);
+    const currentUser = await this.userService.get({
+      username: req.user.username,
+    });
+    return await this.userService.getUsersInRadius(radius, currentUser);
   }
 
   @UseGuards(AuthGuard)

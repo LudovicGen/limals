@@ -11,10 +11,11 @@ const prisma = new PrismaClient();
 async function main() {
   dotenv.config();
   console.log('Seeding...');
+  await prisma.account.deleteMany({});
+  await prisma.animal.deleteMany({});
   await prisma.user.deleteMany({});
   await prisma.city.deleteMany({});
   await prisma.breed.deleteMany({});
-  await prisma.animal.deleteMany({});
 
   console.log('seeding Cities...');
   await seedCities();

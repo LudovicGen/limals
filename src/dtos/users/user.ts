@@ -54,6 +54,14 @@ export class CreateUserDto {
   @IsNumber()
   @IsOptional()
   public sex?: number | null;
+
+  @IsNumber()
+  @IsOptional()
+  public latitude?: number | null;
+
+  @IsNumber()
+  @IsOptional()
+  public longitude?: number | null;
 }
 
 export class UserDto extends CreateUserDto {
