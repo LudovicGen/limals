@@ -34,20 +34,27 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('/')
-  async list(@Query() query: FilterDto | undefined): Promise<User[]> {
-    return await this.userService.list({ where: { username: query.search } });
-  }
-
-  @Get('/city/:id')
-  async listCity(@Param('id') id: string): Promise<User[]> {
-    return await this.userService.getCity({
-      cityWhereUniqueInput: {
-        id,
-      },
+  async list(@Query() query: FilterDto<User> | undefined): Promise<User[]> {
+    return await this.userService.list({
+      skip: parseInt(query.skip) || 0,
+      take: parseInt(query.take) || 20,
+      orderBy: { username: query.order },
+      where: { username: query.search },
     });
   }
 
-  @UseGuards(AuthGuard)
+  // Ludo: Pas nécessaire (duplication), nous avons déjà l'ensemble des users en relation dans /cities/:id
+
+  // @Get('/city/:id')
+  // async listCity(@Param('id') id: string): Promise<User[]> {
+  //   return await this.userService.getCity({
+  //     cityWhereUniqueInput: {
+  //       id,
+  //     },
+  //   });
+  // }
+
+  // @UseGuards(AuthGuard)
   @Get('/proximity')
   async getUsersInRadius(
     @Query('radius') radius: string,
@@ -60,13 +67,11 @@ export class UserController {
     return await this.userService.getUsersInRadius(radius, currentUser);
   }
 
-  @UseGuards(AuthGuard)
   @Get('/:id')
   async get(@Param('id') id: string): Promise<User> {
     return await this.userService.get({ id: id });
   }
 
-  @UseGuards(AuthGuard)
   @Post('upload')
   @UseInterceptors(
     FileInterceptor('file', {
