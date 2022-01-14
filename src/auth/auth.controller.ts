@@ -15,9 +15,11 @@ export class AuthController {
   @Post('/register')
   @HttpCode(HttpStatus.CREATED)
   public async register(
-    @Body() body: CreateUserDto,
+    //FIXME
+    @Body() body: CreateUserDto & { password: string },
     @Body('password') password: string,
   ): Promise<void> {
+    delete body.password;
     const { id } = await this.citizenService.create(body);
     await this.authService.register(body.username, password, id);
   }

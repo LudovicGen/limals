@@ -1,4 +1,3 @@
-import { Id } from '../utils';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
@@ -11,8 +10,9 @@ import {
 import { BreedDto } from '.';
 import { Type } from 'class-transformer';
 import { UserDto } from '..';
+import { Id, RelationInput, RelationsInput } from '../utils';
 
-export class CreatAnimalDto {
+export class CreateAnimalDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -21,7 +21,7 @@ export class CreatAnimalDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  public birthYear: string;
+  public birthYear: number;
 
   @ApiProperty()
   @IsOptional()
@@ -50,19 +50,19 @@ export class CreatAnimalDto {
 
   @ApiProperty({ type: () => BreedDto })
   @Type(() => Id)
-  public breedsId: Id[];
+  public breeds?: RelationsInput<BreedDto>;
 
   @ApiProperty({ type: () => UserDto })
   @Type(() => Id)
-  public userId: Id;
+  public user: RelationInput<UserDto>;
 }
 
-export class AnimalDto extends CreatAnimalDto {
-  @Type(() => BreedDto)
-  public breedsId: BreedDto[];
+export class AnimalDto extends CreateAnimalDto {
+  @ApiProperty()
+  public breeds?: RelationsInput<BreedDto>;
 
-  @Type(() => UserDto)
-  public userId: UserDto;
+  @ApiProperty()
+  public user: RelationInput<UserDto>;
 
   @ApiProperty()
   @IsNotEmpty()

@@ -10,7 +10,8 @@ import {
   IsUUID,
 } from 'class-validator';
 import { CityDto } from '.';
-import { Id, RelationInput } from '../utils';
+import { AnimalDto } from '..';
+import { Id, RelationInput, RelationsInput } from '../utils';
 
 export class CreateUserDto {
   @ApiProperty()
@@ -27,6 +28,11 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   public username: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  public avatar?: string | null;
 
   @ApiProperty()
   @IsISO8601()
@@ -49,11 +55,22 @@ export class CreateUserDto {
   @IsNumber()
   @IsOptional()
   public sex?: number | null;
+
+  @IsNumber()
+  @IsOptional()
+  public latitude?: number | null;
+
+  @IsNumber()
+  @IsOptional()
+  public longitude?: number | null;
 }
 
 export class UserDto extends CreateUserDto {
   @ApiProperty()
   public city: RelationInput<CityDto>;
+
+  @ApiProperty({ type: () => AnimalDto })
+  public animals: RelationsInput<UserDto>;
 
   @ApiProperty()
   @IsNotEmpty()

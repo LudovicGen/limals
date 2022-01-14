@@ -14,22 +14,26 @@ model Account {
 }
 
 model City {
-  id         String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name       String
   postalCode String
-  User       User[]
+  id         String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  users      User[]
 }
 
 model User {
   id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   firstName String
   lastName  String
+  avatar    String?
   username  String    @unique
   birthDate DateTime? @db.Timestamptz(6)
   email     String    @unique
   sex       Int       @default(0)
+  latitude  Float?
+  longitude Float?
   cityId    String    @db.Uuid
   city      City      @relation(fields: [cityId], references: [id])
+  animals   Animal[]
   roleId    String    @db.Uuid
   role      Role      @relation(fields: [roleId], references: [id])
 }
@@ -43,8 +47,8 @@ enum Action {
 }
 
 model Role {
-  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name       String
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
   Permissions Permission[]
   Users       User[]
 }
@@ -59,4 +63,24 @@ model Permission {
   reason     String?
   role       Role     @relation(fields: [roleId], references: [id])
   roleId     String
+}
+
+model Breed {
+  name    String
+  id      String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  animals Animal[]
+}
+
+model Animal {
+  name        String?
+  sex         Int     @default(0)
+  height      Int
+  weight      Int?
+  description String
+  castrated   Boolean
+  birthYear   Int
+  id          String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String  @db.Uuid
+  user        User    @relation(fields: [userId], references: [id])
+  breeds      Breed[]
 }
