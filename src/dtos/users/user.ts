@@ -30,8 +30,9 @@ export class CreateUserDto {
   public username: string;
 
   @ApiProperty()
+  @IsOptional()
   @IsString()
-  public avatar: string;
+  public avatar?: string | null;
 
   @ApiProperty()
   @IsISO8601()
