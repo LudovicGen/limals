@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { User, Prisma } from '@prisma/client';
+import { User, Prisma, File } from '@prisma/client';
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
@@ -82,6 +82,23 @@ export class UserService {
     });
 
     return usersInProximity;
+  }
+
+  async addAvatar(userId: string, imageBuffer: Buffer, filename: string) {
+    const avatar = await this.prisma.file.create({
+      data: {
+        fileName: filename,
+        data: imageBuffer,
+        User: { connect: { id: userId } },
+      },
+    });
+    return avatar;
+  }
+
+  async getFileById(fileId: string): Promise<File | null> {
+    return await this.prisma.file.findUnique({
+      where: { id: fileId },
+    });
   }
 }
 

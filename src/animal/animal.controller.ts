@@ -9,7 +9,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { Animal } from '@prisma/client';
-import { CreateAnimalDto, Id, AnimalDto, FilterDto } from 'src/dtos';
+import { CreateAnimalDto, FilterDto } from 'src/dtos';
 
 import { AnimalService } from './animal.service';
 
@@ -52,7 +52,7 @@ export class AnimalController {
   ): Promise<Animal> {
     return await this.animalService.update({
       where: { id: id },
-      data: animal,
+      data: { ...animal, user: { connect: animal.user.connect } },
     });
   }
 

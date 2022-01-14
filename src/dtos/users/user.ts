@@ -11,6 +11,7 @@ import {
 } from 'class-validator';
 import { CityDto } from '.';
 import { AnimalDto } from '..';
+import { FileDto } from '../image/file';
 import { Id, RelationInput, RelationsInput } from '../utils';
 
 export class CreateUserDto {
@@ -28,11 +29,6 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   public username: string;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsString()
-  public avatar?: string | null;
 
   @ApiProperty()
   @IsISO8601()
@@ -66,11 +62,14 @@ export class CreateUserDto {
 }
 
 export class UserDto extends CreateUserDto {
-  @ApiProperty()
+  @ApiProperty({ type: () => CityDto })
   public city: RelationInput<CityDto>;
 
   @ApiProperty({ type: () => AnimalDto })
   public animals: RelationsInput<UserDto>;
+
+  @ApiProperty({ type: () => FileDto })
+  public avatar?: RelationInput<FileDto>;
 
   @ApiProperty()
   @IsNotEmpty()
