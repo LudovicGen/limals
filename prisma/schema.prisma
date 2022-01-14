@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      =  env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model Account {
@@ -14,20 +14,49 @@ model Account {
 }
 
 model City {
-  id   String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id         String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name       String
   postalCode String
   User       User[]
 }
 
 model User {
-  id   String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   firstName String
   lastName  String
   username  String    @unique
   birthDate DateTime? @db.Timestamptz(6)
   email     String    @unique
   sex       Int       @default(0)
-  cityId    String @db.Uuid()
+  cityId    String    @db.Uuid
   city      City      @relation(fields: [cityId], references: [id])
+  roleId    String    @db.Uuid
+  role      Role      @relation(fields: [roleId], references: [id])
+}
+
+enum Action {
+  Manage
+  Create
+  Update
+  Read
+  Delete
+}
+
+model Role {
+  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String
+  Permissions Permission[]
+  Users       User[]
+}
+
+model Permission {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  action     Action
+  subject    String
+  fields     String[]
+  conditions Json?
+  inverted   Boolean? @default(false)
+  reason     String?
+  role       Role     @relation(fields: [roleId], references: [id])
+  roleId     String
 }
