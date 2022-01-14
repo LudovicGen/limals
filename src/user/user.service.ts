@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { User, Prisma } from '@prisma/client';
-
+import MulterModule from '@nestjs/platform-express';
+import { from, Observable } from 'rxjs';
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}

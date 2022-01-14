@@ -30,6 +30,10 @@ export class CreateUserDto {
   public username: string;
 
   @ApiProperty()
+  @IsString()
+  public avatar: string;
+
+  @ApiProperty()
   @IsISO8601()
   @IsOptional()
   public birthDate?: string | null;

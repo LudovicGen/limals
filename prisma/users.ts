@@ -19,6 +19,7 @@ export const seedUsers = async (): Promise<void> => {
       sex: 1,
       latitude: 44.837789 + generateRandomFloatInRange(-0.5, 0.5),
       longitude: -0.57918 + generateRandomFloatInRange(-0.5, 0.5),
+      avatar: '',
     };
     promises.push(prisma.user.create({ data: items }));
   }
