@@ -18,6 +18,7 @@ export class AuthController {
     @Body() body: CreateUserDto,
     @Body('password') password: string,
   ): Promise<void> {
+    delete body.password;
     const { id } = await this.citizenService.create(body);
     await this.authService.register(body.username, password, id);
   }

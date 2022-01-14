@@ -28,6 +28,8 @@ model User {
   birthDate DateTime? @db.Timestamptz(6)
   email     String    @unique
   sex       Int       @default(0)
+  latitude Float
+  longitude Float
   cityId    String @db.Uuid()
   city      City      @relation(fields: [cityId], references: [id])
   animals   Animal[]
