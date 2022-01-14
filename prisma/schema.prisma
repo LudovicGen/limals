@@ -24,6 +24,7 @@ model User {
   id   String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   firstName String
   lastName  String
+  avatar    String
   username  String    @unique
   birthDate DateTime? @db.Timestamptz(6)
   email     String    @unique

@@ -17,6 +17,7 @@ export const seedUsers = async (): Promise<void> => {
       email: Faker.internet.email(),
       city: { connect: random.arrayElement(cities.map((m) => ({ id: m.id }))) },
       sex: 1,
+      avatar: '',
     };
     promises.push(prisma.user.create({ data: items }));
   }
