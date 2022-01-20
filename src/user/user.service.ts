@@ -84,6 +84,7 @@ export class UserService {
     return usersInProximity;
   }
 
+  // save avatar in db
   async addAvatar(userId: string, imageBuffer: Buffer, filename: string) {
     const avatar = await this.prisma.file.create({
       data: {
@@ -94,7 +95,7 @@ export class UserService {
     });
     return avatar;
   }
-
+  // get avatar from db
   async getFileById(fileId: string): Promise<File | null> {
     return await this.prisma.file.findUnique({
       where: { id: fileId },
