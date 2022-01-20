@@ -17,7 +17,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { User } from '@prisma/client';
 import { Response } from 'express';
-import { CreateUserDto, FilterDto } from 'src/dtos';
+import { CreateUserDto, FilterDto } from './../dtos';
 
 import { UserService } from './user.service';
 
