@@ -9,7 +9,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { Breed } from '@prisma/client';
-import { CreateBreedDto, Id, BreedDto, FilterDto } from 'src/dtos';
+import { CreateBreedDto, FilterDto } from 'src/dtos';
 
 import { BreedService } from './breed.service';
 

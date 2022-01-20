@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 
 export const seedUsers = async (): Promise<void> => {
   const cities = await prisma.city.findMany();
+  const avatars = await prisma.city.findMany();
   const promises: Promise<User>[] = [];
 
   for (let index = 0; index < 10; index++) {
@@ -19,7 +20,6 @@ export const seedUsers = async (): Promise<void> => {
       sex: 1,
       latitude: 44.837789 + generateRandomFloatInRange(-0.5, 0.5),
       longitude: -0.57918 + generateRandomFloatInRange(-0.5, 0.5),
-      avatar: '',
     };
     promises.push(prisma.user.create({ data: items }));
   }
