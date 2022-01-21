@@ -11,6 +11,9 @@ export class CityService {
   ): Promise<City | null> {
     return this.prisma.city.findUnique({
       where: cityWhereUniqueInput,
+      include: {
+        users: true,
+      },
     });
   }
 
@@ -18,8 +21,8 @@ export class CityService {
     skip?: number;
     take?: number;
     cursor?: Prisma.CityWhereUniqueInput;
-    where?: Prisma.UserWhereInput;
-    orderBy?: Prisma.UserOrderByWithRelationInput;
+    where?: Prisma.CityWhereInput;
+    orderBy?: Prisma.CityOrderByWithAggregationInput;
   }): Promise<City[]> {
     const { skip, take, cursor, where, orderBy } = params;
     return this.prisma.city.findMany({

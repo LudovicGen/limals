@@ -9,7 +9,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { Animal } from '@prisma/client';
-import { CreateAnimalDto, Id, AnimalDto, FilterDto } from 'src/dtos';
+import { CreateAnimalDto, FilterDto } from 'src/dtos';
 
 import { AnimalService } from './animal.service';
 
@@ -18,8 +18,13 @@ export class AnimalController {
   constructor(private readonly animalService: AnimalService) {}
 
   @Get('/')
-  async list(@Query() query: FilterDto | undefined): Promise<Animal[]> {
-    return await this.animalService.list({ where: { name: query.search } });
+  async list(@Query() query: FilterDto<Animal> | undefined): Promise<Animal[]> {
+    return await this.animalService.list({
+      skip: parseInt(query.skip) || 0,
+      take: parseInt(query.take) || 20,
+      orderBy: { name: query.order },
+      where: { name: query.search },
+    });
   }
 
   @Get('/:id')
@@ -47,7 +52,7 @@ export class AnimalController {
   ): Promise<Animal> {
     return await this.animalService.update({
       where: { id: id },
-      data: animal,
+      data: { ...animal, user: { connect: animal.user.connect } },
     });
   }
 

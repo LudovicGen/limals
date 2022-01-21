@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { User, Prisma } from '@prisma/client';
-import MulterModule from '@nestjs/platform-express';
-import { from, Observable } from 'rxjs';
+import { User, Prisma, File } from '@prisma/client';
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
@@ -11,7 +9,7 @@ export class UserService {
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,
   ): Promise<User | null> {
     return this.prisma.user.findUnique({
-      where: userWhereUniqueInput,
+      where: { id: userWhereUniqueInput.id },
     });
   }
 
@@ -85,6 +83,24 @@ export class UserService {
 
     return usersInProximity;
   }
+
+  // save avatar in db
+  async addAvatar(userId: string, imageBuffer: Buffer, filename: string) {
+    const avatar = await this.prisma.file.create({
+      data: {
+        fileName: filename,
+        data: imageBuffer,
+        User: { connect: { id: userId } },
+      },
+    });
+    return avatar;
+  }
+  // get avatar from db
+  async getFileById(fileId: string): Promise<File | null> {
+    return await this.prisma.file.findUnique({
+      where: { id: fileId },
+    });
+  }
 }
 
 //This function takes in latitude and longitude of two location and returns the distance between them as the crow flies (in km)
@@ -103,7 +119,7 @@ function calcCrow(lat1, lon1, lat2, lon2) {
       Math.sin(dLon / 2) *
       Math.cos(radLat1) *
       Math.cos(radLat2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const d = R * c;
   return d;
 }

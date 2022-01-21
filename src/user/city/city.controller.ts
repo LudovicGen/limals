@@ -18,8 +18,14 @@ export class CityController {
   constructor(private readonly cityService: CityService) {}
 
   @Get('/')
-  async list(@Query() query: FilterDto | undefined): Promise<City[]> {
-    return await this.cityService.list({});
+  async list(@Query() query: FilterDto<City> | undefined): Promise<City[]> {
+    console.log(query.order);
+    return await this.cityService.list({
+      skip: parseInt(query.skip) || 0,
+      take: parseInt(query.take) || 20,
+      orderBy: { name: query.order },
+      where: { name: query.search },
+    });
   }
 
   @Get('/:id')

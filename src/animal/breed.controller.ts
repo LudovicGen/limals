@@ -9,7 +9,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { Breed } from '@prisma/client';
-import { CreateBreedDto, Id, BreedDto, FilterDto } from 'src/dtos';
+import { CreateBreedDto, FilterDto } from 'src/dtos';
 
 import { BreedService } from './breed.service';
 
@@ -18,8 +18,13 @@ export class BreedController {
   constructor(private readonly breedService: BreedService) {}
 
   @Get('/')
-  async list(@Query() query: FilterDto | undefined): Promise<Breed[]> {
-    return await this.breedService.list({ where: { name: query.search } });
+  async list(@Query() query: FilterDto<Breed> | undefined): Promise<Breed[]> {
+    return await this.breedService.list({
+      skip: parseInt(query.skip) || 0,
+      take: parseInt(query.take) || 20,
+      orderBy: { name: query.order },
+      where: { name: query.search },
+    });
   }
 
   @Get('/:id')

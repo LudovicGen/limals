@@ -58,10 +58,10 @@ export class CreateAnimalDto {
 }
 
 export class AnimalDto extends CreateAnimalDto {
-  @ApiProperty()
+  @ApiProperty({ type: () => BreedDto })
   public breeds?: RelationsInput<BreedDto>;
 
-  @ApiProperty()
+  @ApiProperty({ type: () => UserDto })
   public user: RelationInput<UserDto>;
 
   @ApiProperty()
