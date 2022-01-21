@@ -4,6 +4,7 @@ import type { AuthTokenDto } from '../dtos';
 import { pbkdf2Sync } from 'crypto';
 import { ConfigService } from 'config/config.service';
 import { PrismaService } from '../prisma.service';
+import { Account } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -17,11 +18,12 @@ export class AuthService {
     username: string,
     password: string,
     id: string,
-  ): Promise<void> {
+  ): Promise<Account> {
     const hashedPassword = this.hashPassword(password);
 
     const account = { username, password: hashedPassword };
-    await this.prisma.account.create({ data: account });
+    const result = await this.prisma.account.create({ data: account });
+    return result;
   }
 
   public async login(

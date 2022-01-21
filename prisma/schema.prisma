@@ -29,6 +29,7 @@ model User {
   email     String    @unique
   sex       Int       @default(0)
   latitude  Float?
+  isEmailConfirmed Boolean @default(false)
   longitude Float?
   avatarId  String?   @db.Uuid
   cityId    String    @db.Uuid

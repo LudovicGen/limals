@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
+  IsBoolean,
   IsEmail,
   IsISO8601,
   IsNotEmpty,
@@ -70,6 +71,10 @@ export class UserDto extends CreateUserDto {
 
   @ApiProperty({ type: () => FileDto })
   public avatar?: RelationInput<FileDto>;
+
+  @ApiProperty()
+  @IsBoolean()
+  public isEmailConfirmed!: boolean;
 
   @ApiProperty()
   @IsNotEmpty()
