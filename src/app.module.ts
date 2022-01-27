@@ -6,14 +6,18 @@ import { BreedModule } from './animal/breed.module';
 import { AuthModule } from './auth/auth.module';
 import { PrismaService } from './prisma.service';
 import { UserModule } from './user/user.module';
+import { RolesGuard } from './guards/roles.guard';
+import { CaslModule } from './casl/casl.module';
 
 @Module({
   imports: [
     PrismaService,
+    RolesGuard,
+    CaslModule,
     AuthModule,
     ConfigModule,
-    CityModule,
     UserModule,
+    CityModule,
     AnimalModule,
     BreedModule,
   ],

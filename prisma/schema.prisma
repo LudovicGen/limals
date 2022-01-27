@@ -35,6 +35,35 @@ model User {
   File      File?     @relation(fields: [avatarId], references: [id])
   city      City      @relation(fields: [cityId], references: [id])
   animals   Animal[]
+  roleId    String    @db.Uuid
+  role      Role      @relation(fields: [roleId], references: [id])
+}
+
+enum Action {
+  Manage
+  Create
+  Update
+  Read
+  Delete
+}
+
+model Role {
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  Permissions Permission[]
+  Users       User[]
+}
+
+model Permission {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  action     Action
+  subject    String
+  fields     String[]
+  conditions Json?
+  inverted   Boolean? @default(false)
+  reason     String?
+  role       Role     @relation(fields: [roleId], references: [id])
+  roleId     String
 }
 
 model Breed {

@@ -29,6 +29,8 @@
     "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
+    "@casl/ability": "^5.4.3",
+    "@casl/prisma": "^1.0.1",
     "@commitlint/cli": "^15.0.0",
     "@commitlint/config-conventional": "^15.0.0",
     "@nestjs/common": "^8.0.0",
