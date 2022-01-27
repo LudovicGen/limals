@@ -1,15 +1,17 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 
-import { AccountDto, CreateUserDto, AuthTokenDto } from '../dtos';
+import { AccountDto, CreateUserDto, AuthTokenDto, UserDto } from '../dtos';
 
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
+import { EmailConfirmationService } from 'src/email/confirmation/emailConfirmation.service';
 
 @Controller('/auth')
 export class AuthController {
   public constructor(
     private readonly authService: AuthService,
     private readonly citizenService: UserService,
+    private readonly emailConfirmationService: EmailConfirmationService,
   ) {}
 
   @Post('/register')
@@ -18,10 +20,16 @@ export class AuthController {
     //FIXME
     @Body() body: CreateUserDto & { password: string },
     @Body('password') password: string,
-  ): Promise<void> {
+  ): Promise<AccountDto> {
     delete body.password;
     const { id } = await this.citizenService.create(body);
-    await this.authService.register(body.username, password, id);
+    const account = await this.authService.register(
+      body.username,
+      password,
+      id,
+    );
+    await this.emailConfirmationService.sendVerificationLink(body.email);
+    return account;
   }
 
   @Post('/login')

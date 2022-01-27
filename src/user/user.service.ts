@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { User, Prisma, File } from '@prisma/client';
 @Injectable()
@@ -99,6 +99,24 @@ export class UserService {
   async getFileById(fileId: string): Promise<File | null> {
     return await this.prisma.file.findUnique({
       where: { id: fileId },
+    });
+  }
+
+  async getByEmail(email: string) {
+    const user = await this.prisma.user.findFirst({ where: { email: email } });
+    if (user) {
+      return user;
+    }
+    throw new HttpException(
+      'User with this email does not exist',
+      HttpStatus.NOT_FOUND,
+    );
+  }
+
+  async markEmailAsConfirmed(email: string) {
+    return this.prisma.user.update({
+      where: { email: email },
+      data: { email: email, isEmailConfirmed: true },
     });
   }
 }
