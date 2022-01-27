@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaService } from './prisma.service';
 import { UserModule } from './user/user.module';
 import { EmailModule } from './email/email.module';
+import { EmailConfirmationModule } from './email/confirmation/emailConfirmation.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { EmailModule } from './email/email.module';
     AuthModule,
     ConfigModule,
     ScheduleModule.forRoot(),
+    EmailConfirmationModule,
     EmailModule,
     CityModule,
     UserModule,

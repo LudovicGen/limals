@@ -7,6 +7,5 @@ import { PrismaService } from '../prisma.service';
 @Module({
   controllers: [EmailSchedulingController],
   providers: [EmailService, EmailSchedulingService, PrismaService],
-  exports: [EmailService],
 })
 export class EmailModule {}
