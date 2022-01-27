@@ -22,7 +22,7 @@ export class EmailConfirmationService {
 
     const url = `${process.env.EMAIL_CONFIRMATION_URL}?token=${token}`;
 
-    const text = `Welcome to the application. To confirm the email address, click here: ${url}`;
+    const text = `Bienvenue sur Limals.Veuillez confirmer votre email ici: ${url}`;
 
     return this.emailService.sendMail({
       to: email,
