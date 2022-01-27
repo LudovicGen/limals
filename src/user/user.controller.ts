@@ -13,6 +13,7 @@ import {
   Req,
   Res,
   StreamableFile,
+  UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { User } from '@prisma/client';
@@ -23,14 +24,17 @@ import { UserService } from './user.service';
 
 import { createParamDecorator } from '@nestjs/common';
 import { Readable } from 'stream';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 export const AuthUser = createParamDecorator((data, req) => {
   return req.user;
 });
+
 @Controller('/users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @UseGuards(AuthGuard)
   @Get('/')
   async list(@Query() query: FilterDto<User> | undefined): Promise<User[]> {
     return await this.userService.list({
@@ -41,15 +45,16 @@ export class UserController {
     });
   }
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Get('/proximity')
   async getUsersInRadius(
     @Query('radius') radius: string,
     @Request() req: any,
   ): Promise<User[]> {
     console.log(req);
+    const id = 'fa045751-2a94-4a70-8643-bd58f84d7fe1';
     const currentUser = await this.userService.get({
-      username: req.user.username,
+      id: id,
     });
     return await this.userService.getUsersInRadius(radius, currentUser);
   }
@@ -66,7 +71,7 @@ export class UserController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     return this.userService.addAvatar(
-      '34d2d1f0-3028-4b89-98ff-6f8df08e9f9d',
+      'fa045751-2a94-4a70-8643-bd58f84d7fe1',
       file.buffer,
       file.originalname,
     );

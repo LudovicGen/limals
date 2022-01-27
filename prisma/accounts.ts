@@ -13,6 +13,7 @@ export const seedAccounts = async (): Promise<void> => {
     username: 'Test',
     birthDate: Faker.date.between('1985-01-01', '2000-01-05'),
     email: 'test@test.com',
+    isEmailConfirmed: true,
     city: { connect: random.arrayElement(cities.map((m) => ({ id: m.id }))) },
     sex: 1,
     latitude: 44.837789 + generateRandomFloatInRange(-0.5, 0.5),

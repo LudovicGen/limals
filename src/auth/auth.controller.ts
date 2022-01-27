@@ -5,6 +5,12 @@ import { AccountDto, CreateUserDto, AuthTokenDto, UserDto } from '../dtos';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/user.service';
 import { EmailConfirmationService } from 'src/email/confirmation/emailConfirmation.service';
+import {
+  ApiBadRequestResponse,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiOkResponse,
+} from '@nestjs/swagger';
 
 @Controller('/auth')
 export class AuthController {
@@ -16,6 +22,11 @@ export class AuthController {
 
   @Post('/register')
   @HttpCode(HttpStatus.CREATED)
+  @ApiCreatedResponse({ description: 'The account has been created' })
+  @ApiConflictResponse({
+    description: 'The email already exists',
+  })
+  @ApiBadRequestResponse({ description: 'Validation error' })
   public async register(
     //FIXME
     @Body() body: CreateUserDto & { password: string },
@@ -33,9 +44,11 @@ export class AuthController {
   }
 
   @Post('/login')
+  @ApiOkResponse({ description: 'Login successful' })
+  @ApiConflictResponse({ description: 'The email already exists' })
+  @ApiBadRequestResponse({ description: 'Validation error' })
   public async login(@Body() body: AccountDto): Promise<AuthTokenDto> {
     const { username, password } = body;
-
     return this.authService.login(username, password);
   }
 }
