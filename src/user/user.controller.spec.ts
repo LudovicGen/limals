@@ -6,7 +6,6 @@ import { random } from 'faker';
 const prisma = new PrismaClient();
 
 let cityCreate = {} as City;
-let usersList = {} as Promise<User[]>;
 let newUser = {} as User;
 
 beforeAll(async () => {
@@ -15,7 +14,6 @@ beforeAll(async () => {
     data: { name: 'Bordeaux', postalCode: '33000' },
   });
 
-  // usersList = prisma.user.findMany();
   const cities = await prisma.city.findMany();
 
   newUser = await prisma.user.create({
@@ -37,13 +35,14 @@ it('sould return Bordeaux', async () => {
   const newCity = await prisma.city.findUnique({
     where: { id: cityCreate.id },
   });
-  await expect(newCity).toStrictEqual(cityCreate);
+
+  expect(newCity).toStrictEqual(cityCreate);
 });
 
 it('Not return object Bordeaux', async () => {
   const newCity = await prisma.city.findFirst();
 
-  await expect(newCity).not.toStrictEqual(cityCreate);
+  expect(newCity).not.toStrictEqual(cityCreate);
 });
 
 it('should return object User', async () => {
@@ -51,7 +50,24 @@ it('should return object User', async () => {
     where: { id: newUser.id },
   });
 
-  await expect(data).toStrictEqual(newUser);
+  expect(data).toStrictEqual(newUser);
+});
+
+it('should return object User update', async () => {
+  const data = await prisma.user.update({
+    where: { id: newUser.id },
+    data: { firstName: 'firstname' },
+  });
+
+  expect(data).not.toStrictEqual(newUser);
+});
+
+it('should delete object User', async () => {
+  const data = await prisma.user.delete({
+    where: { id: newUser.id },
+  });
+
+  expect(data).not.toStrictEqual(newUser);
 });
 
 function generateRandomFloatInRange(min, max) {
